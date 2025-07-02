@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
+import { useCart } from "@/contexts/CartContext";
 
 interface Product {
   id: string;
@@ -20,6 +21,7 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
+  const { addItem } = useCart();
   const getCategoryLabel = (category: string) => {
     switch (category) {
       case 'general': return 'General Books';
@@ -36,6 +38,17 @@ const ProductCard = ({ product }: ProductCardProps) => {
       case 'mushafs': return 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300';
       default: return 'bg-gray-50 text-gray-700 dark:bg-gray-950 dark:text-gray-300';
     }
+  };
+
+  const handleAddToCart = () => {
+    addItem({
+      id: product.id,
+      title: product.title,
+      title_ar: product.title_ar,
+      price: product.price,
+      stock_quantity: product.stock_quantity,
+      image_url: product.image_url
+    });
   };
 
   return (
@@ -87,6 +100,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
               size="sm" 
               disabled={product.stock_quantity === 0}
               className="w-full"
+              onClick={handleAddToCart}
             >
               Add to Cart
             </Button>

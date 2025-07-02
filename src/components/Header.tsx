@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Search, Contact, Home } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useCart } from "@/contexts/CartContext";
 
 const Header = () => {
+  const { state } = useCart();
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between px-4">
@@ -38,12 +40,16 @@ const Header = () => {
             <Button variant="ghost" size="sm" className="font-arabic">ع</Button>
           </div>
           
-          <Button variant="outline" size="sm" className="relative">
-            <ShoppingCart className="w-4 h-4" />
-            <span className="sr-only">Shopping cart</span>
-            <span className="absolute -top-2 -right-2 w-5 h-5 bg-primary text-primary-foreground rounded-full text-xs flex items-center justify-center">
-              0
-            </span>
+          <Button variant="outline" size="sm" className="relative" asChild>
+            <Link to="/cart">
+              <ShoppingCart className="w-4 h-4" />
+              <span className="sr-only">Shopping cart</span>
+              {state.itemCount > 0 && (
+                <span className="absolute -top-2 -right-2 w-5 h-5 bg-primary text-primary-foreground rounded-full text-xs flex items-center justify-center">
+                  {state.itemCount}
+                </span>
+              )}
+            </Link>
           </Button>
         </div>
       </div>
